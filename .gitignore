@@ -1,0 +1,88 @@
+# Build outputs
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Oo]ut/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.ipdb
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*.log
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+
+# NuGet
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Visual Studio / MSBuild
+.vs/
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Rider
+.idea/
+*.sln.iml
+
+# Test
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.trx
+*.coverage
+*.coveragexml
+
+# Node (e.g. AG.Mcp.Server tooling)
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Azure Functions / local secrets
+local.settings.json
+**/local.settings.json
+
+# Environment and secrets (keep templates committed)
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+ehthumbs.db

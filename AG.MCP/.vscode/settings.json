@@ -1,0 +1,12 @@
+{
+    "chat.mcp.serverSampling": {
+        "DEMO-MCP/.vscode/mcp.json: AG-mcp-server": {
+            "allowedModels": [
+                "copilot/auto",
+                "claude-code/claude-haiku-4.5",
+                "copilotcli/claude-haiku-4.5",
+                "copilotcli/gpt-4.1"
+            ]
+        }
+    }
+}

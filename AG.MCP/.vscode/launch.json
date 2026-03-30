@@ -1,0 +1,42 @@
+{
+    "configurations": [
+
+        {
+            "name": "MCP API",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/AG.MCP.Api/bin/Debug/net10.0/AG.MCP.Api.dll",
+            "args": [
+                "--urls", "https://localhost:44328"
+            ],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
+      "name": "C#: MCP Server Debug (HTTP)",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/AG.Mcp.Server/AG.Mcp.Server.csproj"
+    },
+    {
+      "name": "Debug MCP Server (stdio)",
+      "type": "dotnetwatchattach",
+      "request": "attach",
+      "program": "Globomantics.Mcp.Server.exe",
+      "task": "Run MCP Inspector (stdio -> dotnet run)"
+    },
+    {
+      "name": "Attach to .NET Functions",
+      "type": "coreclr",
+      "request": "attach",
+      "processId": "${command:azureFunctions.pickProcess}"
+    }
+    ]
+}
