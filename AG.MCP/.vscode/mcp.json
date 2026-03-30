@@ -1,0 +1,12 @@
+{
+    "servers": {
+        "AG-mcp-server": {
+            "command": "dotnet",
+            "args": [
+                "run",
+                "--project",
+                "AG.Mcp.Server\\AG.Mcp.Server.csproj"
+            ]
+        }
+    }
+}
