@@ -1,9 +1,7 @@
 using Azure.Core;
 using Azure.Identity;
-using AG.Mcp.Server;
 using Azure.Search.Documents;
 using Azure.Storage.Blobs;
-using AG.Mcp.Server.Clients.Tools;
 using AG.Mcp.Server.Documents;
 using AG.Mcp.Server.InvoicingApi;
 
@@ -23,10 +21,16 @@ builder.Configuration
     .AddEnvironmentVariables();
 
 builder.Services.AddMcpServer()
-   .WithStdioServerTransport()
+    .WithStdioServerTransport()
+    .WithHttpTransport(options => {
+        options.Stateless = true;
+        
+    })
     .WithToolsFromAssembly()
     .WithPromptsFromAssembly()
-    .WithResourcesFromAssembly();
+    .WithResourcesFromAssembly()
+    
+    ;
 
 // Configure Azure clients and services
 TokenCredential azureCredential;
@@ -75,5 +79,6 @@ builder.Logging.AddConsole(options =>
 );
 var app = builder.Build();
 
+app.MapMcp("/mcp");
 
 await app.RunAsync();
