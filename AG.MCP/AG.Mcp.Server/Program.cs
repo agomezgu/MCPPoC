@@ -4,6 +4,9 @@ using Azure.Search.Documents;
 using Azure.Storage.Blobs;
 using AG.Mcp.Server.Documents;
 using AG.Mcp.Server.InvoicingApi;
+using AG.Mcp.Server.Ui;
+using ModelContextProtocol.Server;
+using System.Text.Json.Nodes;
 
 // Critical for stdio transport: MCP protocol uses stdout for JSON-RPC. Any other output
 // (e.g. paths, logs, .NET runtime) to stdout corrupts the stream and causes "not valid JSON" errors.
@@ -11,6 +14,24 @@ using AG.Mcp.Server.InvoicingApi;
 Console.SetOut(Console.Error);
 
 var builder = WebApplication.CreateBuilder(args);
+
+var clientsUiTool = McpServerTool.Create(
+    UiTools.OpenClientsUi,
+    new McpServerToolCreateOptions
+    {
+        Name = "open_clients_ui",
+        Title = "Open Clients UI",
+        Description = "Open the local Angular clients app to create and list clients.",
+        Meta = new JsonObject
+        {
+            ["ui"] = new JsonObject
+            {
+                ["resourceUri"] = UiResources.ClientsAppResourceUri
+            },
+            // Keep the legacy key for hosts that still rely on it.
+            ["ui/resourceUri"] = UiResources.ClientsAppResourceUri
+        }
+    });
 
 
 // Configure JSON, user secrets, and environment variables
@@ -26,6 +47,7 @@ builder.Services.AddMcpServer()
         options.Stateless = true;
         
     })
+    .WithTools([clientsUiTool])
     .WithToolsFromAssembly()
     .WithPromptsFromAssembly()
     .WithResourcesFromAssembly()
