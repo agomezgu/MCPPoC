@@ -41,6 +41,7 @@ public static class UiResources
 
         var browserDir = Path.Combine(environment.WebRootPath, "clients-ui", "browser");
         var inlinedStylesheetCount = 0;
+        var inlinedScriptCount = 0;
 
         html = Regex.Replace(
             html,
@@ -60,6 +61,33 @@ public static class UiResources
             },
             RegexOptions.IgnoreCase);
 
+        // The MCP App iframe enforces script-src 'self' 'unsafe-inline'. Cross-origin
+        // chunk loads are blocked, so we inline the single bundled script (produced
+        // by scripts/bundle-mcp.mjs) and strip any modulepreload hints.
+        html = Regex.Replace(
+            html,
+            "<link\\s+rel=\"modulepreload\"[^>]*>\\s*",
+            string.Empty,
+            RegexOptions.IgnoreCase);
+
+        html = Regex.Replace(
+            html,
+            "<script\\s+src=\"/clients-ui/browser/(?<file>mcp-bundle\\.js)\"[^>]*></script>",
+            match =>
+            {
+                var fileName = match.Groups["file"].Value;
+                var filePath = Path.Combine(browserDir, fileName);
+                if (!File.Exists(filePath))
+                {
+                    return match.Value;
+                }
+
+                inlinedScriptCount++;
+                var js = File.ReadAllText(filePath, Encoding.UTF8);
+                return $"<script>{js}</script>";
+            },
+            RegexOptions.IgnoreCase);
+
         html = html
             .Replace("<base href=\"/clients-ui/browser/\">", "<base href=\"./\">", StringComparison.Ordinal)
             .Replace("href=\"/clients-ui/browser/", $"href=\"{assetsBaseUrl}", StringComparison.Ordinal)
@@ -71,6 +99,7 @@ public static class UiResources
         {
             hypothesisId = "H-F,H-G",
             inlinedStylesheetCount,
+            inlinedScriptCount,
             hasRemoteScript = html.Contains("<script src=\"http://", StringComparison.Ordinal) || html.Contains("<script src=\"https://", StringComparison.Ordinal),
             hasModulePreload = html.Contains("modulepreload", StringComparison.Ordinal),
             hasRemoteStylesheet = html.Contains("<link rel=\"stylesheet\" href=\"http://", StringComparison.Ordinal)

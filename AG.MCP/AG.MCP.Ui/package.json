@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
     "build": "ng build",
-    "build:mcp": "ng build --configuration production,mcp --output-path ../AG.Mcp.Server/wwwroot/clients-ui --base-href /clients-ui/browser/ --deploy-url /clients-ui/browser/",
+    "build:mcp": "ng build --configuration production,mcp --output-path ../AG.Mcp.Server/wwwroot/clients-ui --base-href /clients-ui/browser/ --deploy-url /clients-ui/browser/ && node scripts/bundle-mcp.mjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
