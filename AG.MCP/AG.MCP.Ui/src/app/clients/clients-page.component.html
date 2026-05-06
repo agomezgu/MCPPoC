@@ -1,0 +1,94 @@
+<section class="clients-layout">
+  <article class="card">
+    <h2>Create Client</h2>
+    <form [formGroup]="createClientForm" (ngSubmit)="submitCreateClient()">
+      <label>
+        Name *
+        <input formControlName="name" type="text" placeholder="Contoso Ltd." />
+      </label>
+      @if (fieldHasError('name')) {
+        <small class="error">Name is required.</small>
+      }
+
+      <label>
+        Tax ID *
+        <input formControlName="taxId" type="text" placeholder="RUC-123456789" />
+      </label>
+      @if (fieldHasError('taxId')) {
+        <small class="error">Tax ID is required.</small>
+      }
+
+      <label>
+        Email
+        <input formControlName="email" type="email" placeholder="billing@contoso.com" />
+      </label>
+      @if (fieldHasError('email')) {
+        <small class="error">Invalid email format.</small>
+      }
+
+      <label>
+        Phone
+        <input formControlName="phone" type="text" placeholder="+1 555-0000" />
+      </label>
+
+      <label>
+        Address
+        <textarea formControlName="address" rows="3" placeholder="Street, city, country"></textarea>
+      </label>
+
+      <button type="submit" [disabled]="isSaving">
+        {{ isSaving ? 'Saving...' : 'Create client' }}
+      </button>
+    </form>
+  </article>
+
+  <article class="card">
+    <div class="card-header">
+      <h2>Clients</h2>
+      <button type="button" (click)="loadClients()" [disabled]="isLoading">
+        {{ isLoading ? 'Refreshing...' : 'Refresh' }}
+      </button>
+    </div>
+
+    @if (successMessage) {
+      <p class="success">{{ successMessage }}</p>
+    }
+
+    @if (errorMessage) {
+      <p class="error">{{ errorMessage }}</p>
+    }
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Tax ID</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (client of clients; track client.id) {
+            <tr>
+              <td>{{ client.name }}</td>
+              <td>{{ client.taxId }}</td>
+              <td>{{ client.email || '-' }}</td>
+              <td>{{ client.phone || '-' }}</td>
+              <td>
+                <span [class.active]="client.isActive" [class.inactive]="!client.isActive">
+                  {{ client.isActive ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5">No clients found.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </article>
+</section>
