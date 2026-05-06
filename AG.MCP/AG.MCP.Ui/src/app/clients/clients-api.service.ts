@@ -1,7 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { ClientDto, CreateClientRequest, PagedResult } from './clients.models';
+import {
+  ClientDto,
+  CreateClientRequest,
+  PagedResult,
+  UpdateClientRequest
+} from './clients.models';
 
 @Injectable({ providedIn: 'root' })
 export class ClientsApiService {
@@ -15,21 +20,41 @@ export class ClientsApiService {
     });
   }
 
+  getClient(id: string): Observable<ClientDto> {
+    return this.http
+      .get<ClientDto>(`${this.clientsUrl}/${id}`)
+      .pipe(map((client) => this.normalizeClient(client)));
+  }
+
   createClient(payload: CreateClientRequest): Observable<ClientDto> {
-    const normalizedPayload: CreateClientRequest = {
+    return this.http
+      .post<ClientDto>(this.clientsUrl, this.normalizeRequest(payload))
+      .pipe(map((client) => this.normalizeClient(client)));
+  }
+
+  updateClient(id: string, payload: UpdateClientRequest): Observable<ClientDto> {
+    return this.http
+      .put<ClientDto>(`${this.clientsUrl}/${id}`, this.normalizeRequest(payload))
+      .pipe(map((client) => this.normalizeClient(client)));
+  }
+
+  private normalizeRequest<T extends CreateClientRequest>(payload: T): T {
+    return {
       ...payload,
+      name: payload.name.trim(),
+      taxId: payload.taxId.trim(),
       email: payload.email?.trim() || null,
       phone: payload.phone?.trim() || null,
       address: payload.address?.trim() || null
     };
+  }
 
-    return this.http.post<ClientDto>(this.clientsUrl, normalizedPayload).pipe(
-      map((client) => ({
-        ...client,
-        email: client.email ?? null,
-        phone: client.phone ?? null,
-        address: client.address ?? null
-      }))
-    );
+  private normalizeClient(client: ClientDto): ClientDto {
+    return {
+      ...client,
+      email: client.email ?? null,
+      phone: client.phone ?? null,
+      address: client.address ?? null
+    };
   }
 }

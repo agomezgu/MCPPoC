@@ -1,8 +1,11 @@
 import { Routes } from '@angular/router';
-import { ClientsPageComponent } from './clients/clients-page.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'clients', pathMatch: 'full' },
-  { path: 'clients', component: ClientsPageComponent },
+  {
+    path: 'clients',
+    loadChildren: () =>
+      import('./clients/clients.routes').then((routes) => routes.CLIENTS_ROUTES)
+  },
   { path: '**', redirectTo: 'clients' }
 ];

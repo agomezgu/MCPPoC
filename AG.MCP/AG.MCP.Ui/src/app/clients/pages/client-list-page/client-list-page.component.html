@@ -1,0 +1,45 @@
+<article class="card">
+  <div class="card-header">
+    <h3>Client List</h3>
+    <button type="button" (click)="loadClients()" [disabled]="isLoading">
+      {{ isLoading ? 'Refreshing...' : 'Refresh' }}
+    </button>
+  </div>
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Tax ID</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (client of clients; track client.id) {
+          <tr>
+            <td>{{ client.name }}</td>
+            <td>{{ client.taxId }}</td>
+            <td>{{ client.email || '-' }}</td>
+            <td>{{ client.phone || '-' }}</td>
+            <td>
+              <span [class.active]="client.isActive" [class.inactive]="!client.isActive">
+                {{ client.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5">No clients found.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</article>

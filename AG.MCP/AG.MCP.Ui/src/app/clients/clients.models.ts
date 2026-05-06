@@ -17,6 +17,12 @@ export interface CreateClientRequest {
   address?: string | null;
 }
 
+export interface UpdateClientRequest extends CreateClientRequest {
+  isActive: boolean;
+}
+
+export type ClientFormValue = UpdateClientRequest;
+
 export interface PagedResult<T> {
   items: T[];
   page: number;
