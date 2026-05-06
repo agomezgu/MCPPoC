@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import {
   ClientDto,
@@ -7,10 +7,11 @@ import {
   PagedResult,
   UpdateClientRequest
 } from './clients.models';
+import { API_BASE_URL } from '../api-base-url.token';
 
 @Injectable({ providedIn: 'root' })
 export class ClientsApiService {
-  private readonly clientsUrl = '/api/clients';
+  private readonly clientsUrl = `${inject(API_BASE_URL)}/api/clients`;
 
   constructor(private readonly http: HttpClient) {}
 
