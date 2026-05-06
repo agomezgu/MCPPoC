@@ -5,6 +5,7 @@ using Azure.Storage.Blobs;
 using AG.Mcp.Server.Documents;
 using AG.Mcp.Server.InvoicingApi;
 using AG.Mcp.Server.Ui;
+using Microsoft.Extensions.FileProviders;
 using ModelContextProtocol.Server;
 using System.Text.Json.Nodes;
 
@@ -100,6 +101,21 @@ builder.Logging.AddConsole(options =>
     options.LogToStandardErrorThreshold = LogLevel.Trace
 );
 var app = builder.Build();
+
+var clientsUiPath = Path.Combine(builder.Environment.ContentRootPath, "wwwroot", "clients-ui");
+Directory.CreateDirectory(clientsUiPath);
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(clientsUiPath),
+    RequestPath = "/clients-ui",
+    OnPrepareResponse = context =>
+    {
+        context.Context.Response.Headers.AccessControlAllowOrigin = "*";
+        context.Context.Response.Headers.AccessControlAllowMethods = "GET, OPTIONS";
+        context.Context.Response.Headers.AccessControlAllowHeaders = "Content-Type";
+    }
+});
 
 app.MapMcp("/mcp");
 
