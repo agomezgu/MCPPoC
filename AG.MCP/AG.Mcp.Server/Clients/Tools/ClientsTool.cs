@@ -36,9 +36,11 @@ public class ClientsTool
         return await _apiClient.GetClientAsync(id, ct);
     }
 
-    [McpServerTool, Description("Create a new client in  axxbeggs Company")]
+    [McpServerTool, Description(
+        "Programmatic client creation for axxbeggs Company. Requires ALL fields (name, taxId, email, phone, address) up-front. " +
+        "Do NOT use for conversational/chat creation; use 'create_client_elicit' instead so missing fields can be collected via a form.")]
     public async Task<ClientDto> CreateClient(
-        [Description("Create client request")]
+        [Description("Create client request with all fields populated")]
         CreateClientRequest request,
         CancellationToken ct = default)
     {

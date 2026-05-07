@@ -45,7 +45,9 @@ builder.Configuration
 builder.Services.AddMcpServer()
     .WithStdioServerTransport()
     .WithHttpTransport(options => {
-        options.Stateless = true;
+        // Sampling + elicitation require server->client requests, which are not
+        // available in stateless mode.
+        options.Stateless = false;
         
     })
     .WithTools([clientsUiTool])
