@@ -1,7 +1,17 @@
 <main class="app-shell">
   <header class="app-header">
-    <h1>AG MCP UI</h1>
-    <p>Client management workspace</p>
+    <div class="app-header-top">
+      <div>
+        <h1>AG MCP UI</h1>
+        <p>Clients, invoicing, payments, and reports</p>
+      </div>
+      <nav class="app-nav" aria-label="Main">
+        <a routerLink="/clients" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }">Clients</a>
+        <a routerLink="/invoices" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }">Invoices</a>
+        <a routerLink="/payments" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }">Payments</a>
+        <a routerLink="/reports" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }">Reports</a>
+      </nav>
+    </div>
   </header>
 
   <router-outlet />

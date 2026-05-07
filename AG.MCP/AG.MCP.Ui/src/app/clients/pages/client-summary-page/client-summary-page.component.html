@@ -1,0 +1,57 @@
+<article class="card">
+  <div class="card-header">
+    <div>
+      <h3>Client financial summary</h3>
+      @if (summary) {
+        <p class="sub">{{ summary.clientName }}</p>
+      }
+    </div>
+    <div class="header-actions">
+      <a routerLink="/clients/list">Back to list</a>
+      @if (clientId) {
+        <a [routerLink]="['/clients', clientId, 'edit']">Edit client</a>
+      }
+    </div>
+  </div>
+
+  @if (isLoading) {
+    <p>Loading summary…</p>
+  }
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  @if (summary && !isLoading) {
+    <div class="kpi-grid">
+      <div class="kpi">
+        <span class="label">Total invoices</span>
+        <span class="value">{{ summary.totalInvoices }}</span>
+      </div>
+      <div class="kpi">
+        <span class="label">Pending invoices</span>
+        <span class="value">{{ summary.pendingInvoices }}</span>
+      </div>
+      <div class="kpi">
+        <span class="label">Overdue invoices</span>
+        <span class="value">{{ summary.overdueInvoices }}</span>
+      </div>
+      <div class="kpi">
+        <span class="label">Total billed</span>
+        <span class="value">{{ summary.totalBilled | number: '1.2-2' }}</span>
+      </div>
+      <div class="kpi">
+        <span class="label">Total paid</span>
+        <span class="value">{{ summary.totalPaid | number: '1.2-2' }}</span>
+      </div>
+      <div class="kpi">
+        <span class="label">Total pending</span>
+        <span class="value">{{ summary.totalPending | number: '1.2-2' }}</span>
+      </div>
+      <div class="kpi">
+        <span class="label">Total overdue</span>
+        <span class="value">{{ summary.totalOverdue | number: '1.2-2' }}</span>
+      </div>
+    </div>
+  }
+</article>

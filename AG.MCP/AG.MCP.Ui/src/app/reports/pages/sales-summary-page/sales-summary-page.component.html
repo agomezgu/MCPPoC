@@ -1,0 +1,59 @@
+<article class="card">
+  <div class="card-header">
+    <h3>Sales summary</h3>
+    <button type="button" (click)="load()" [disabled]="isLoading">
+      {{ isLoading ? 'Loading...' : 'Apply' }}
+    </button>
+  </div>
+
+  <div class="filters">
+    <label class="field">
+      <span>From</span>
+      <input type="date" [(ngModel)]="fromDate" name="fromDate" />
+    </label>
+    <label class="field">
+      <span>To</span>
+      <input type="date" [(ngModel)]="toDate" name="toDate" />
+    </label>
+  </div>
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  @if (data && !isLoading) {
+    <p class="range">
+      Period:
+      <strong>{{ data.fromDate | date: 'mediumDate' }}</strong>
+      —
+      <strong>{{ data.toDate | date: 'mediumDate' }}</strong>
+    </p>
+
+    <div class="kpi-grid">
+      <div class="kpi">
+        <span class="label">Total sales</span>
+        <span class="value">{{ data.totalSales | number: '1.2-2' }}</span>
+      </div>
+      <div class="kpi">
+        <span class="label">Collected</span>
+        <span class="value">{{ data.totalCollected | number: '1.2-2' }}</span>
+      </div>
+      <div class="kpi">
+        <span class="label">Outstanding</span>
+        <span class="value">{{ data.totalOutstanding | number: '1.2-2' }}</span>
+      </div>
+      <div class="kpi">
+        <span class="label">Invoices</span>
+        <span class="value">{{ data.invoiceCount }}</span>
+      </div>
+      <div class="kpi">
+        <span class="label">Paid</span>
+        <span class="value">{{ data.paidInvoiceCount }}</span>
+      </div>
+      <div class="kpi">
+        <span class="label">Pending</span>
+        <span class="value">{{ data.pendingInvoiceCount }}</span>
+      </div>
+    </div>
+  }
+</article>

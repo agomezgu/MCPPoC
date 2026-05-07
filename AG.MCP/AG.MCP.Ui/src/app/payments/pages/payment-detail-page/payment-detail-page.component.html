@@ -1,0 +1,48 @@
+<article class="card">
+  <div class="card-header">
+    <div>
+      <h3>Payment</h3>
+      @if (payment) {
+        <p class="sub">Invoice {{ payment.invoiceNumber }}</p>
+      }
+    </div>
+    <div class="header-actions">
+      <a routerLink="/payments/list">Back to list</a>
+      @if (payment) {
+        <a [routerLink]="['/invoices', payment.invoiceId]">View invoice</a>
+      }
+    </div>
+  </div>
+
+  @if (isLoading) {
+    <p>Loading…</p>
+  }
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  @if (payment && !isLoading) {
+    <dl class="meta">
+      <div>
+        <dt>Amount</dt>
+        <dd>{{ payment.amount | number: '1.2-2' }}</dd>
+      </div>
+      <div>
+        <dt>Payment date</dt>
+        <dd>{{ payment.paymentDate | date: 'mediumDate' }}</dd>
+      </div>
+      <div>
+        <dt>Reference</dt>
+        <dd>{{ payment.reference || '—' }}</dd>
+      </div>
+      <div>
+        <dt>Recorded</dt>
+        <dd>{{ payment.createdAt | date: 'short' }}</dd>
+      </div>
+    </dl>
+    @if (payment.notes) {
+      <p class="notes"><strong>Notes:</strong> {{ payment.notes }}</p>
+    }
+  }
+</article>

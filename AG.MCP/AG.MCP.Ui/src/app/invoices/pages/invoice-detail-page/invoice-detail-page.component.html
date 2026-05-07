@@ -1,0 +1,90 @@
+<article class="card">
+  <div class="card-header">
+    <div>
+      <h3>Invoice detail</h3>
+      @if (invoice) {
+        <p class="sub">{{ invoice.invoiceNumber }} — {{ invoice.clientName }}</p>
+      }
+    </div>
+    <div class="header-actions">
+      <a routerLink="/invoices/list">Back to list</a>
+      @if (invoiceId) {
+        <a [routerLink]="['/invoices', invoiceId, 'edit']">Edit</a>
+        <a [routerLink]="['/payments', 'create']" [queryParams]="{ invoiceId: invoiceId }">Register payment</a>
+      }
+    </div>
+  </div>
+
+  @if (isLoading) {
+    <p>Loading…</p>
+  }
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  @if (invoice && !isLoading) {
+    <dl class="meta">
+      <div>
+        <dt>Issue date</dt>
+        <dd>{{ invoice.issueDate | date: 'mediumDate' }}</dd>
+      </div>
+      <div>
+        <dt>Due date</dt>
+        <dd>{{ invoice.dueDate | date: 'mediumDate' }}</dd>
+      </div>
+      <div>
+        <dt>Status</dt>
+        <dd>{{ invoice.status }}</dd>
+      </div>
+      <div>
+        <dt>Total</dt>
+        <dd>{{ invoice.totalAmount | number: '1.2-2' }}</dd>
+      </div>
+      <div>
+        <dt>Paid</dt>
+        <dd>{{ invoice.paidAmount | number: '1.2-2' }}</dd>
+      </div>
+      <div>
+        <dt>Pending</dt>
+        <dd>{{ invoice.pendingAmount | number: '1.2-2' }}</dd>
+      </div>
+    </dl>
+
+    @if (invoice.notes) {
+      <p class="notes"><strong>Notes:</strong> {{ invoice.notes }}</p>
+    }
+
+    <h4>Line items</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Code</th>
+            <th>Qty</th>
+            <th>Unit</th>
+            <th>Unit price</th>
+            <th>Line total</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (line of invoice.items; track line.id) {
+            <tr>
+              <td>{{ line.description }}</td>
+              <td>{{ line.productCode || '—' }}</td>
+              <td>{{ line.quantity }}</td>
+              <td>{{ line.unit }}</td>
+              <td>{{ line.unitPrice | number: '1.2-2' }}</td>
+              <td>{{ line.lineTotal | number: '1.2-2' }}</td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6">No line items.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</article>

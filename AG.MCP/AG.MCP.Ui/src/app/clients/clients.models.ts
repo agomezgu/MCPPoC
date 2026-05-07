@@ -1,3 +1,7 @@
+import { PagedResult } from '../shared/models/paged-result.model';
+
+export type { PagedResult };
+
 export interface ClientDto {
   id: string;
   name: string;
@@ -23,9 +27,14 @@ export interface UpdateClientRequest extends CreateClientRequest {
 
 export type ClientFormValue = UpdateClientRequest;
 
-export interface PagedResult<T> {
-  items: T[];
-  page: number;
-  pageSize: number;
-  totalCount: number;
+export interface ClientSummaryDto {
+  clientId: string;
+  clientName: string;
+  totalInvoices: number;
+  pendingInvoices: number;
+  overdueInvoices: number;
+  totalBilled: number;
+  totalPaid: number;
+  totalPending: number;
+  totalOverdue: number;
 }

@@ -34,6 +34,13 @@ export const CLIENTS_ROUTES: Routes = [
           import('./pages/client-update-page/client-update-page.component').then(
             (component) => component.ClientUpdatePageComponent
           )
+      },
+      {
+        path: ':id/summary',
+        loadComponent: () =>
+          import('./pages/client-summary-page/client-summary-page.component').then(
+            (component) => component.ClientSummaryPageComponent
+          )
       }
     ]
   }

@@ -1,0 +1,80 @@
+<article class="card">
+  <div class="card-header">
+    <h3>Create invoice</h3>
+    <a routerLink="/invoices/list" class="link-pill">Cancel</a>
+  </div>
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  <form (ngSubmit)="submit()" class="form">
+    <label class="field">
+      <span>Client</span>
+      <select [(ngModel)]="clientId" name="clientId" required [disabled]="isLoadingClients">
+        <option value="">Select client</option>
+        @for (c of clients; track c.id) {
+          <option [value]="c.id">{{ c.name }}</option>
+        }
+      </select>
+    </label>
+
+    <div class="row">
+      <label class="field">
+        <span>Issue date</span>
+        <input type="date" [(ngModel)]="issueDate" name="issueDate" required />
+      </label>
+      <label class="field">
+        <span>Due date</span>
+        <input type="date" [(ngModel)]="dueDate" name="dueDate" required />
+      </label>
+    </div>
+
+    <label class="field">
+      <span>Notes</span>
+      <textarea [(ngModel)]="notes" name="notes" rows="2"></textarea>
+    </label>
+
+    <div class="lines-header">
+      <h4>Line items</h4>
+      <button type="button" class="secondary" (click)="addLine()">Add line</button>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Product code</th>
+            <th>Qty</th>
+            <th>Unit</th>
+            <th>Unit price</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (line of lines; track $index) {
+            <tr>
+              <td><input [(ngModel)]="line.description" [name]="'d' + $index" /></td>
+              <td><input [(ngModel)]="line.productCode" [name]="'p' + $index" /></td>
+              <td><input type="number" [(ngModel)]="line.quantity" [name]="'q' + $index" step="0.01" /></td>
+              <td><input [(ngModel)]="line.unit" [name]="'u' + $index" /></td>
+              <td><input type="number" [(ngModel)]="line.unitPrice" [name]="'up' + $index" step="0.01" /></td>
+              <td>
+                <button type="button" class="secondary" (click)="removeLine($index)" [disabled]="lines.length === 1">
+                  Remove
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="actions">
+      <button type="submit" [disabled]="isSaving || isLoadingClients">
+        {{ isSaving ? 'Saving…' : 'Create invoice' }}
+      </button>
+    </div>
+  </form>
+</article>

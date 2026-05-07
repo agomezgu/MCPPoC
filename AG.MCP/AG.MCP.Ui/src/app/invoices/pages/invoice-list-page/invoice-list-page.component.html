@@ -1,0 +1,93 @@
+<article class="card">
+  <div class="card-header">
+    <h3>{{ title }}</h3>
+    <button type="button" (click)="loadInvoices()" [disabled]="isLoading">
+      {{ isLoading ? 'Refreshing...' : 'Refresh' }}
+    </button>
+  </div>
+
+  <div class="filters">
+    <label class="field">
+      <span>Search</span>
+      <input type="search" [(ngModel)]="search" (keyup.enter)="applyFilters()" placeholder="Number, client..." />
+    </label>
+    <label class="field">
+      <span>Sort by</span>
+      <select [(ngModel)]="sortBy">
+        <option value="issueDate">Issue date</option>
+        <option value="dueDate">Due date</option>
+        <option value="invoiceNumber">Invoice #</option>
+        <option value="totalAmount">Total</option>
+        <option value="pendingAmount">Pending</option>
+      </select>
+    </label>
+    <label class="field checkbox">
+      <input type="checkbox" [(ngModel)]="sortDescending" />
+      <span>Descending</span>
+    </label>
+    @if (mode === 'all') {
+      <label class="field">
+        <span>Client</span>
+        <select [(ngModel)]="clientFilter">
+          <option [ngValue]="null">All clients</option>
+          @for (c of clients; track c.id) {
+            <option [ngValue]="c.id">{{ c.name }}</option>
+          }
+        </select>
+      </label>
+    }
+    <button type="button" class="secondary" (click)="applyFilters()" [disabled]="isLoading">Apply</button>
+  </div>
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Invoice #</th>
+          <th>Client</th>
+          <th>Issue</th>
+          <th>Due</th>
+          <th>Total</th>
+          <th>Paid</th>
+          <th>Pending</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (inv of invoices; track inv.id) {
+          <tr>
+            <td>{{ inv.invoiceNumber }}</td>
+            <td>{{ inv.clientName }}</td>
+            <td>{{ inv.issueDate | date: 'mediumDate' }}</td>
+            <td>{{ inv.dueDate | date: 'mediumDate' }}</td>
+            <td>{{ inv.totalAmount | number: '1.2-2' }}</td>
+            <td>{{ inv.paidAmount | number: '1.2-2' }}</td>
+            <td>{{ inv.pendingAmount | number: '1.2-2' }}</td>
+            <td>{{ inv.status }}</td>
+            <td class="actions">
+              <a [routerLink]="['/invoices', inv.id]">View</a>
+              <a [routerLink]="['/invoices', inv.id, 'edit']">Edit</a>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="9">No invoices found.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pager">
+    <span>Page {{ page }} of {{ totalPages }} ({{ totalCount }} total)</span>
+    <div class="pager-buttons">
+      <button type="button" class="secondary" (click)="goPrev()" [disabled]="isLoading || page <= 1">Previous</button>
+      <button type="button" class="secondary" (click)="goNext()" [disabled]="isLoading || page >= totalPages">Next</button>
+    </div>
+  </div>
+</article>

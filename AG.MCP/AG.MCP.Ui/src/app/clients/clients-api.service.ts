@@ -3,11 +3,21 @@ import { Injectable, inject } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import {
   ClientDto,
+  ClientSummaryDto,
   CreateClientRequest,
-  PagedResult,
   UpdateClientRequest
 } from './clients.models';
 import { API_BASE_URL } from '../api-base-url.token';
+import { PagedResult } from '../shared/models/paged-result.model';
+import { toHttpParams } from '../shared/utils/http-query.util';
+
+export interface GetClientsQuery {
+  page?: number;
+  pageSize?: number;
+  search?: string | null;
+  sortBy?: string | null;
+  sortDescending?: boolean;
+}
 
 @Injectable({ providedIn: 'root' })
 export class ClientsApiService {
@@ -15,10 +25,27 @@ export class ClientsApiService {
 
   constructor(private readonly http: HttpClient) {}
 
-  getClients(page = 1, pageSize = 20): Observable<PagedResult<ClientDto>> {
+  getClients(query: GetClientsQuery = {}): Observable<PagedResult<ClientDto>> {
+    const {
+      page = 1,
+      pageSize = 20,
+      search,
+      sortBy,
+      sortDescending = false
+    } = query;
     return this.http.get<PagedResult<ClientDto>>(this.clientsUrl, {
-      params: { page, pageSize }
+      params: toHttpParams({
+        page,
+        pageSize,
+        search,
+        sortBy,
+        sortDescending
+      })
     });
+  }
+
+  getClientSummary(id: string): Observable<ClientSummaryDto> {
+    return this.http.get<ClientSummaryDto>(`${this.clientsUrl}/${id}/summary`);
   }
 
   getClient(id: string): Observable<ClientDto> {
