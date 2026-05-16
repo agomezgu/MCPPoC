@@ -211,9 +211,9 @@ MCP Apps are usually rendered inside a host-controlled embedded surface, such as
 
 ## 🧪 Sampling
 
-**Short Definition:** Sampling is when the MCP server asks the connected AI client to run a small model request for it, such as extracting structured data from a user message.
+**Short Definition:** Sampling is when the MCP server asks the connected AI client to run a small model request for it, such as extracting structured data from a user message. Example: the server receives “Add Farm Fresh Co with tax id TAX-004” and asks the client model to convert that sentence into a structured `create_client` action.
 
-**Deep Definition:** Sampling is server-initiated LLM inference over an existing MCP session. The server sends a request such as `sampling/createMessage`; the client decides how to execute it, usually with human-in-the-loop controls and its configured model policy. This is powerful, but it changes the trust boundary: server-provided or user-provided content may be sent to the client's model. Production implementations should define token limits, validation rules, logging, timeout handling, data classification, and fallback behavior when the client does not support sampling.
+**Deep Definition:** Sampling is server-initiated LLM inference over an existing MCP session. The server sends a request such as `sampling/createMessage`; the client decides how to execute it, usually with human-in-the-loop controls and its configured model policy. Example: `ClientSamplingTool` can ask the connected client model to transform a natural-language onboarding request into JSON like `{"action":"create_client","toolName":"create_client_elicit","request":{...}}`, then the server parses and validates that output before continuing. This is powerful, but it changes the trust boundary: server-provided or user-provided content may be sent to the client's model. Production implementations should define token limits, validation rules, logging, timeout handling, data classification, and fallback behavior when the client does not support sampling.
 
 **Patterns (Best practices):**
 
