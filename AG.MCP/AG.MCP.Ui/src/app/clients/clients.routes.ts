@@ -4,6 +4,7 @@ import { ClientMasterPageComponent } from './pages/client-master-page/client-mas
 export const CLIENTS_ROUTES: Routes = [
   {
     path: 'agent-create',
+    data: { hideAppShell: true },
     loadComponent: () =>
       import('./pages/client-agent-create-page/client-agent-create-page.component').then(
         (component) => component.ClientAgentCreatePageComponent
