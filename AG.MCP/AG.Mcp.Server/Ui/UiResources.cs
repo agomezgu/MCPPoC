@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using ModelContextProtocol.Protocol;
 using ModelContextProtocol.Server;
@@ -124,8 +125,63 @@ public static class UiResources
         {
             Uri = ClientsAppResourceUri,
             MimeType = "text/html;profile=mcp-app",
-            Text = html
+            Text = html,
+            Meta = BuildUiMeta(configuration, publicBaseUrl)
         };
+    }
+
+    private static JsonObject BuildUiMeta(IConfiguration configuration, string publicBaseUrl)
+    {
+        var apiOrigin = GetConfiguredApiOrigin(configuration);
+        var assetOrigin = GetOrigin(publicBaseUrl) ?? publicBaseUrl.TrimEnd('/');
+
+        var connectDomains = new[] { apiOrigin };
+        var resourceDomains = new[] { assetOrigin };
+
+        return new JsonObject
+        {
+            ["ui"] = new JsonObject
+            {
+                ["csp"] = new JsonObject
+                {
+                    ["connectDomains"] = ToJsonArray(connectDomains),
+                    ["resourceDomains"] = ToJsonArray(resourceDomains)
+                }
+            },
+            ["openai/widgetCSP"] = new JsonObject
+            {
+                ["connect_domains"] = ToJsonArray(connectDomains),
+                ["resource_domains"] = ToJsonArray(resourceDomains)
+            }
+        };
+    }
+
+    private static string GetConfiguredApiOrigin(IConfiguration configuration)
+    {
+        var apiBaseUrl =
+            configuration["InvoicingApi:BaseUrl"]
+            ?? configuration["AbceggApi:BaseUrl"]
+            ?? "https://localhost:44328";
+
+        return GetOrigin(apiBaseUrl) ?? apiBaseUrl.TrimEnd('/');
+    }
+
+    private static JsonArray ToJsonArray(IEnumerable<string> values)
+    {
+        var array = new JsonArray();
+        foreach (var value in values.Where(value => !string.IsNullOrWhiteSpace(value)).Distinct(StringComparer.OrdinalIgnoreCase))
+        {
+            array.Add(value);
+        }
+
+        return array;
+    }
+
+    private static string? GetOrigin(string url)
+    {
+        return Uri.TryCreate(url, UriKind.Absolute, out var uri)
+            ? uri.GetLeftPart(UriPartial.Authority)
+            : null;
     }
 
     private static void DebugLog(string location, object data)
