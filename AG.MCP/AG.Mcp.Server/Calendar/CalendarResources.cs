@@ -10,7 +10,7 @@ namespace AG.Mcp.Server.Calendar;
 [McpServerResourceType]
 public static class CalendarResources
 {
-    public const string ResourceWorkCalendarUri = "globomantics://hrm/calendars/work";
+    public const string ResourceWorkCalendarUri = "L&L ://hrm/calendars/work";
 
     [McpServerResource(
         UriTemplate = ResourceWorkCalendarUri,
@@ -32,7 +32,7 @@ public static class CalendarResources
         return JsonSerializer.Serialize(workCalendarResource, McpJsonUtilities.DefaultOptions);
     }
 
-    public const string ResourceEmployeeCalendarUri = "globomantics://hrm/calendars/employee/{employeeId}";
+    public const string ResourceEmployeeCalendarUri = "L&L ://hrm/calendars/employee/{employeeId}";
 
     [McpServerResource(
         UriTemplate = ResourceEmployeeCalendarUri, 
@@ -53,7 +53,7 @@ public static class CalendarResources
         return JsonSerializer.Serialize(plannedTimeOff, McpJsonUtilities.DefaultOptions);
     }
 
-    public const string ResourceWorkByLocationCalendarUri = "globomantics://hrm/calendars/work/{year}/{location}";
+    public const string ResourceWorkByLocationCalendarUri = "L&L ://hrm/calendars/work/{year}/{location}";
 
     [McpServerResource(UriTemplate = ResourceWorkByLocationCalendarUri, Name = "Work Calendar by Location", MimeType = "application/json")]
     [Description("The work calendar for a specific year and location")]

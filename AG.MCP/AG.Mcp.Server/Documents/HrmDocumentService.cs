@@ -19,7 +19,7 @@ public interface IHrmDocumentService
 public class HrmDocumentService : IHrmDocumentService
 {
     private readonly BlobServiceClient blobServiceClient;
-    private static readonly string containerName = "globomanticshrm";
+    private static readonly string containerName = "L&L hrm";
 
     public HrmDocumentService(BlobServiceClient blobServiceClient)
     {
@@ -118,7 +118,7 @@ public record DocumentInfo(
     PlanDocumentCategory? Category);
 
 /// <summary>
-/// Maps to BenefitPlanType in Globomantics.Hrm.Api as an example
+/// Maps to BenefitPlanType in L&L .Hrm.Api as an example
 /// of manual mapping you might do in a real service between two separate services.
 /// This could also come from a database or storage service.
 /// </summary>

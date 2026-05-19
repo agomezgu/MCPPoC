@@ -17,7 +17,7 @@ public class PlanTimeOffTool(IHrmAbsenceApi hrmAbsenceApi, IHrmDocumentService h
 
     [McpServerTool(Title = "Plan Time Off"),  Description(
         """
-        Help Globomantics employees plan and answer questions about time off.
+        Help L&Lemployees plan and answer questions about time off.
         The tool includes the employee's scheduled time off calendar and the office location calendars.
         Prompt for their employee ID unless they provided it already.
         This will help you avoid scheduling time off during company holidays or overlapping with existing time off.
@@ -34,8 +34,8 @@ public class PlanTimeOffTool(IHrmAbsenceApi hrmAbsenceApi, IHrmDocumentService h
         var employeeDetails = await hrmAbsenceApi.GetWorkerByIdAsync(employeeId, cancellationToken);
         var eligibility = await hrmAbsenceApi.GetEligibleAbsenceTypesAsync(employeeId, "not_used", cancellationToken);
         // var timeOffPolicyDocumentResource = await DocumentResources.DocumentResourceById(
-        //     "Globomantics_Vacation_TimeOff_Policy.pdf", hrmDocumentService, cancellationToken);
-        var documentData = await hrmDocumentService.GetBenefitPlanDocumentContentAsPlainTextAsync("Globomantics_Vacation_TimeOff_Policy.pdf", cancellationToken);
+        //     "L&L _Vacation_TimeOff_Policy.pdf", hrmDocumentService, cancellationToken);
+        var documentData = await hrmDocumentService.GetBenefitPlanDocumentContentAsPlainTextAsync("L&L _Vacation_TimeOff_Policy.pdf", cancellationToken);
 
         return [
             new TextContentBlock
@@ -44,7 +44,7 @@ public class PlanTimeOffTool(IHrmAbsenceApi hrmAbsenceApi, IHrmDocumentService h
             },
             new TextContentBlock
             {
-                Text = "You can find the Globomantics work and employee calendar(s) below for planning time off work."
+                Text = "You can find the L&Lwork and employee calendar(s) below for planning time off work."
             },
             new EmbeddedResourceBlock
             {
@@ -71,11 +71,11 @@ public class PlanTimeOffTool(IHrmAbsenceApi hrmAbsenceApi, IHrmDocumentService h
             },
             new TextContentBlock
             {
-                Text = "The Globomantics Time Off Policy details are below:"
+                Text = "The L&LTime Off Policy details are below:"
             },
             // new ResourceLinkBlock
             // {
-            //     Name = "Globomantics Time Off Policy Document",
+            //     Name = "L&LTime Off Policy Document",
             //     Uri = timeOffPolicyDocumentResource.Uri,
             //     MimeType = timeOffPolicyDocumentResource.MimeType
             // },

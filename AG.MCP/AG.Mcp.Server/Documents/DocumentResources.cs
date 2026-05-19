@@ -9,8 +9,8 @@
 // [McpServerResourceType]
 // public static class DocumentResources
 // {
-//     public const string ResourceBenefitPlanDocumentsUri = "globomantics://hrm/documents";
-//     public const string ResourceBenefitPlanDocumentUri = "globomantics://hrm/documents/{documentId}";
+//     public const string ResourceBenefitPlanDocumentsUri = "L&L ://hrm/documents";
+//     public const string ResourceBenefitPlanDocumentUri = "L&L ://hrm/documents/{documentId}";
 
 //     [McpServerResource(
 //         UriTemplate = ResourceBenefitPlanDocumentsUri,
@@ -35,7 +35,7 @@
 //         UriTemplate = ResourceBenefitPlanDocumentUri,
 //         Name = "HR Benefit Plan and Policy Document by ID",
 //         MimeType = "application/pdf")]
-//     [Description("Retrieves a specific HRM benefit plan document by its document ID (e.g. Globomantics-Plan.pdf)")]
+//     [Description("Retrieves a specific HRM benefit plan document by its document ID (e.g. L&L -Plan.pdf)")]
 //     public static async Task<ResourceContents> DocumentResourceById(string documentId, IHrmDocumentService documentService, CancellationToken cancellationToken)
 //     {
 //         var downloadResult = await documentService.GetBenefitPlanDocumentContentAsync(documentId, cancellationToken);
