@@ -13,6 +13,7 @@ Examples refer to patterns used in **`AG.Mcp.Server`**.
   - [MCP](#mcp)
   - [RPC](#rpc)
   - [JSON-RPC](#json-rpc)
+- [🚚 MCP transport types](#mcp-transport-types)
 - [🖥️ MCP server](#mcp-server)
 - [🏠 MCP host](#mcp-host)
 - [🔌 MCP client](#mcp-client)
@@ -54,6 +55,34 @@ Examples refer to patterns used in **`AG.Mcp.Server`**.
 **Deep Definition:** JSON-RPC 2.0 is a lightweight, transport-agnostic protocol. A request usually contains `jsonrpc`, `method`, optional `params`, and an `id` that correlates the response. A response contains either `result` or `error`. MCP builds on this predictable shape so the same semantic messages can move over different transports, such as stdio or HTTP-based streams.
 
 **References:** [JSON-RPC 2.0 specification](https://www.jsonrpc.org/specification), [MCP specification](https://modelcontextprotocol.io/specification/latest)
+
+---
+
+<a id="mcp-transport-types"></a>
+
+## 🚚 MCP transport types
+
+MCP is transport-agnostic: the protocol messages stay JSON-RPC, while the transport decides how those messages move between client and server.
+
+### Standard input/output (stdio)
+
+**Short Definition:** Stdio transport runs the MCP server as a local process and sends JSON-RPC messages through standard input and standard output.
+
+**Deep Definition:** Stdio is best for local tools, desktop apps, IDE integrations, and developer workflows where the host can start and manage the server process directly. The client launches the server, writes requests to `stdin`, reads responses from `stdout`, and treats process lifetime as the connection lifetime. This keeps deployment simple and avoids exposing a network port, but it also means the server is usually tied to the local machine, local permissions, and the host process model.
+
+### Server-Sent Events (SSE)
+
+**Short Definition:** SSE transport lets a remote MCP server stream messages to the client over an HTTP event stream, while client requests are sent through HTTP.
+
+**Deep Definition:** SSE was the earlier HTTP-based MCP transport for remote servers. It uses a long-lived server-to-client event stream plus separate HTTP requests for client-to-server messages. It fits browser and web infrastructure better than stdio, but it is more complex than a single local process because production systems must handle authentication, CORS, reconnects, load balancers, timeouts, and connection fan-out. New MCP implementations generally prefer Streamable HTTP when available.
+
+### Streamable HTTP
+
+**Short Definition:** Streamable HTTP is the current HTTP transport for MCP. It sends JSON-RPC messages over HTTP and can stream responses when needed.
+
+**Deep Definition:** Streamable HTTP is designed for modern remote MCP deployments. It supports normal HTTP request/response behavior and streaming responses, making it easier to host MCP servers behind standard web infrastructure while still supporting long-running operations and server messages. For enterprise systems, this transport is usually the right fit when the server must be shared, centrally deployed, authenticated, observed, scaled, or accessed from multiple hosts.
+
+**References:** [MCP transports specification](https://modelcontextprotocol.io/specification/latest/basic/transports), [MCP specification](https://modelcontextprotocol.io/specification/latest)
 
 ---
 
