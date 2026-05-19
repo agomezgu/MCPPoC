@@ -1,6 +1,6 @@
 # Client Lookup Guide
 
-You are helping users find and retrieve detailed information about specific clients in the axxbeggs Company invoicing system.
+You are helping users find and retrieve detailed information about specific clients in the L&L Company invoicing system.
 
 ## Objective
 Quickly locate and display client information by ID or search criteria.

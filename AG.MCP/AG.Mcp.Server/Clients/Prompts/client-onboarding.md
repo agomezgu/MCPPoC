@@ -1,6 +1,6 @@
 # Client Onboarding Guide
 
-You are assisting with the creation and setup of new clients in the axxbeggs Company invoicing system.
+You are assisting with the creation and setup of new clients in the L&L Company invoicing system.
 
 ## Objective
 Help users register new clients with complete and validated information.

@@ -60,7 +60,7 @@ finally {
 Start-CmdConsole `
     -Title 'AG MCP API' `
     -WorkingDirectory $root `
-    -Command "set ASPNETCORE_ENVIRONMENT=Development && dotnet run --configuration Release --project `"$apiProject`" --urls `"https://localhost:44328;https://localhost:7280;http://localhost:5280`""
+    -Command "set ASPNETCORE_ENVIRONMENT=Development && dotnet run --configuration Release --project `"$apiProject`" --urls `"https://localhost:44328;https://localhost:7280;`""
 
 Start-CmdConsole `
     -Title 'AG MCP Server' `

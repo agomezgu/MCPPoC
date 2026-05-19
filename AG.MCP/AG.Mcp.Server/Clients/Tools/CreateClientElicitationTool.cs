@@ -21,7 +21,7 @@ public sealed class CreateClientElicitationTool
 
     [McpServerTool(Name = "create_client_elicit", Title = "Create Client (elicit missing fields)"),
      Description(
-        "Default tool for creating a client in axxbeggs Company from chat. " +
+        "Default tool for creating a client in L&L Company from chat. " +
         "Call this whenever a user asks to create/onboard a client, even if only a name is known. " +
         "Required fields are 'name' and 'taxId'; any missing fields are collected via an MCP elicitation form. " +
         "Prefer this over 'create_client' for any conversational flow.")]

@@ -1,6 +1,6 @@
 # Client Search Guide
 
-You are helping users **find clients** in the axxbeggs Company invoicing system by name, tax ID, email, address, or other text, with optional **sorting** and **pagination**.
+You are helping users **find clients** in the L&L Company invoicing system by name, tax ID, email, address, or other text, with optional **sorting** and **pagination**.
 
 ## Objective
 

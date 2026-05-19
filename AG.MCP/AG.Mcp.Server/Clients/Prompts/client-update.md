@@ -1,6 +1,6 @@
 # Client Update Guide
 
-You are helping users modify and maintain client information in the axxbeggs Company invoicing system.
+You are helping users modify and maintain client information in the L&L Company invoicing system.
 
 ## Objective
 Safely update client details while maintaining data integrity and validation.

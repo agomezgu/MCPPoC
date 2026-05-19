@@ -15,7 +15,7 @@ public class ClientsTool
         _apiClient = apiClient;
     }
 
-    [McpServerTool, Description("Get paginated list of  clients of axxbeggs Company with optional search and sorting")]
+    [McpServerTool, Description("Get paginated list of  clients of L&L Company with optional search and sorting")]
     public async Task<PagedResult<ClientDto>> GetClients(
         [Description("Page number to retrieve")][DefaultValue(1)] int page = 1,
         [Description("Page size")][DefaultValue(20)] int pageSize = 20,
@@ -27,7 +27,7 @@ public class ClientsTool
         return await _apiClient.GetClientsAsync(page, pageSize, search, sortBy, sortDescending, ct);
     }
 
-    [McpServerTool, Description("Get client by id of the  axxbeggs Company")]
+    [McpServerTool, Description("Get client by id of the  L&L Company")]
     public async Task<ClientDto?> GetClientById(
         [Description("Client ID")]
         Guid id,
@@ -37,7 +37,7 @@ public class ClientsTool
     }
 
     [McpServerTool, Description(
-        "Programmatic client creation for axxbeggs Company. Requires ALL fields (name, taxId, email, phone, address) up-front. " +
+        "Programmatic client creation for L&L Company. Requires ALL fields (name, taxId, email, phone, address) up-front. " +
         "Do NOT use for conversational/chat creation; use 'create_client_elicit' instead so missing fields can be collected via a form.")]
     public async Task<ClientDto> CreateClient(
         [Description("Create client request with all fields populated")]
@@ -47,7 +47,7 @@ public class ClientsTool
         return await _apiClient.CreateClientAsync(request, ct);
     }
 
-    [McpServerTool, Description("Update an existing client of  axxbeggs Company")]
+    [McpServerTool, Description("Update an existing client of  L&L Company")]
     public async Task<ClientDto?> UpdateClient(
         [Description("Client ID")]
         Guid id,
@@ -58,7 +58,7 @@ public class ClientsTool
         return await _apiClient.UpdateClientAsync(id, request, ct);
     }
 
-    [McpServerTool, Description("Get financial summary for a  axxbeggs Company client ")]
+    [McpServerTool, Description("Get financial summary for a  L&L Company client ")]
     public async Task<ClientSummaryDto?> GetClientSummary(
         [Description("Client ID")]
         Guid id,

@@ -37,6 +37,28 @@ public static class ClientsPrompts
     [Description("Search clients by name, tax ID, or other criteria with sorting and pagination.")]
     public static string ClientSearchPrompt() => LoadMarkdown("client-search.md");
 
+    [McpServerPrompt(Title = "Client Exact Name Search", Name = "Client Exact Name Search")]
+    [Description("Search clients by an exact Name value and ignore partial or non-name matches.")]
+    public static string ClientExactNameSearchPrompt(
+        [Description("Exact client Name to search for.")]
+        string name)
+    {
+        var exactName = name.Trim();
+        if (string.IsNullOrWhiteSpace(exactName))
+            return "Ask the user for the exact client Name before searching.";
+
+        return $"""
+            Find clients whose `Name` exactly equals "{exactName}".
+
+            Use `GetClients` with `search` set to "{exactName}", `page` set to 1, `pageSize` set to 50, and `sortBy` set to "name".
+            The search endpoint performs a case-insensitive contains search across name, tax ID, and email, so only treat results as matches when the returned `Name` exactly equals "{exactName}".
+
+            If the first page does not prove there are no more candidates, continue through the remaining pages and keep only exact `Name` matches.
+            Report each exact match with `Id`, `Name`, `TaxId`, `Email`, and `IsActive`.
+            If no exact match exists, say that no client was found with exactly that `Name` and do not present partial, tax ID, or email matches as results.
+            """;
+    }
+
     [McpServerPrompt(Title = "Bulk Client Operations Guide", Name = "Bulk Client Operations Guide")]
     [Description("Guide for performing operations on multiple clients using list, pagination, and repeated create or update calls.")]
     public static string BulkClientOperationsPrompt() => LoadMarkdown("bulk-client-operations.md");
