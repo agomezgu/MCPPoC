@@ -77,6 +77,9 @@ yarn-error.log*
 local.settings.json
 **/local.settings.json
 
+# Generated static assets (generated at build in this repo)
+AG.MCP/AG.Mcp.Server/wwwroot/
+
 # Environment and secrets (keep templates committed)
 .env
 .env.*

@@ -1,0 +1,47 @@
+<main class="agent-page">
+  <section class="agent-card" aria-labelledby="agent-create-title">
+    <header>
+      <p class="eyebrow">Agent action</p>
+      <h1 id="agent-create-title">Create Client</h1>
+      <p class="description">Add the minimum client details needed to continue.</p>
+    </header>
+
+    @if (successMessage) {
+      <p class="message success" role="status">{{ successMessage }}</p>
+    }
+
+    @if (errorMessage) {
+      <p class="message error" role="alert">{{ errorMessage }}</p>
+    }
+
+    <form [formGroup]="clientForm" (ngSubmit)="createClient()">
+      <label>
+        Name *
+        <input formControlName="name" type="text" autocomplete="organization" placeholder="Contoso Ltd." />
+      </label>
+      @if (fieldHasError('name')) {
+        <small class="error-text">Name is required.</small>
+      }
+
+      <label>
+        Tax ID *
+        <input formControlName="taxId" type="text" autocomplete="off" placeholder="RUC-123456789" />
+      </label>
+      @if (fieldHasError('taxId')) {
+        <small class="error-text">Tax ID is required.</small>
+      }
+
+      <label>
+        Email
+        <input formControlName="email" type="email" autocomplete="email" placeholder="billing@contoso.com" />
+      </label>
+      @if (fieldHasError('email')) {
+        <small class="error-text">Enter a valid email.</small>
+      }
+
+      <button type="submit" [disabled]="isSaving">
+        {{ isSaving ? 'Creating...' : 'Create client' }}
+      </button>
+    </form>
+  </section>
+</main>

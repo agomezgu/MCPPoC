@@ -1,0 +1,93 @@
+<article class="card">
+  <div class="card-header">
+    <h3>Client statement</h3>
+    <button type="button" (click)="load()" [disabled]="isLoading || isLoadingClients">
+      {{ isLoading ? 'Loading...' : 'Run' }}
+    </button>
+  </div>
+
+  <div class="filters">
+    <label class="field">
+      <span>Client</span>
+      <select [(ngModel)]="clientId" name="clientId" [disabled]="isLoadingClients">
+        <option value="">Select client</option>
+        @for (c of clients; track c.id) {
+          <option [value]="c.id">{{ c.name }}</option>
+        }
+      </select>
+    </label>
+    <label class="field">
+      <span>From (optional)</span>
+      <input type="date" [(ngModel)]="fromDate" name="fromDate" />
+    </label>
+    <label class="field">
+      <span>To (optional)</span>
+      <input type="date" [(ngModel)]="toDate" name="toDate" />
+    </label>
+  </div>
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  @if (data && !isLoading) {
+    <p class="range">
+      <strong>{{ data.clientName }}</strong>
+      —
+      {{ data.fromDate | date: 'mediumDate' }}
+      to
+      {{ data.toDate | date: 'mediumDate' }}
+    </p>
+
+    <div class="kpi-grid">
+      <div class="kpi">
+        <span class="label">Opening balance</span>
+        <span class="value">{{ data.openingBalance | number: '1.2-2' }}</span>
+      </div>
+      <div class="kpi">
+        <span class="label">Total invoiced</span>
+        <span class="value">{{ data.totalInvoiced | number: '1.2-2' }}</span>
+      </div>
+      <div class="kpi">
+        <span class="label">Total paid</span>
+        <span class="value">{{ data.totalPaid | number: '1.2-2' }}</span>
+      </div>
+      <div class="kpi">
+        <span class="label">Closing balance</span>
+        <span class="value">{{ data.closingBalance | number: '1.2-2' }}</span>
+      </div>
+    </div>
+
+    <h4>Transactions</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Reference</th>
+            <th>Debit</th>
+            <th>Credit</th>
+            <th>Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (t of data.transactions; track $index) {
+            <tr>
+              <td>{{ t.date | date: 'mediumDate' }}</td>
+              <td>{{ t.type }}</td>
+              <td>{{ t.reference }}</td>
+              <td>{{ t.debit | number: '1.2-2' }}</td>
+              <td>{{ t.credit | number: '1.2-2' }}</td>
+              <td>{{ t.balance | number: '1.2-2' }}</td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6">No transactions in range.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</article>

@@ -1,6 +1,6 @@
 # Client List Management Guide
 
-You are helping users browse, filter, and manage client lists in the axxbeggs Company invoicing system.
+You are helping users browse, filter, and manage client lists in the L&L Company invoicing system.
 
 ## Objective
 Enable users to view, filter, search, and navigate through the client database efficiently.

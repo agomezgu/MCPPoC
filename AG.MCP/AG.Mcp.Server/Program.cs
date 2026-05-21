@@ -1,11 +1,13 @@
 using Azure.Core;
 using Azure.Identity;
-using AG.Mcp.Server;
 using Azure.Search.Documents;
 using Azure.Storage.Blobs;
-using AG.Mcp.Server.Clients.Tools;
 using AG.Mcp.Server.Documents;
 using AG.Mcp.Server.InvoicingApi;
+using AG.Mcp.Server.Ui;
+using Microsoft.Extensions.FileProviders;
+using ModelContextProtocol.Server;
+using System.Text.Json.Nodes;
 
 // Critical for stdio transport: MCP protocol uses stdout for JSON-RPC. Any other output
 // (e.g. paths, logs, .NET runtime) to stdout corrupts the stream and causes "not valid JSON" errors.
@@ -13,6 +15,24 @@ using AG.Mcp.Server.InvoicingApi;
 Console.SetOut(Console.Error);
 
 var builder = WebApplication.CreateBuilder(args);
+
+var clientsUiTool = McpServerTool.Create(
+    UiTools.OpenClientsUi,
+    new McpServerToolCreateOptions
+    {
+        Name = "open_clients_ui",
+        Title = "Open Clients UI",
+        Description = "Open the local Angular clients app to create and list clients.",
+        Meta = new JsonObject
+        {
+            ["ui"] = new JsonObject
+            {
+                ["resourceUri"] = UiResources.ClientsAppResourceUri
+            },
+            // Keep the legacy key for hosts that still rely on it.
+            ["ui/resourceUri"] = UiResources.ClientsAppResourceUri
+        }
+    });
 
 
 // Configure JSON, user secrets, and environment variables
@@ -23,10 +43,19 @@ builder.Configuration
     .AddEnvironmentVariables();
 
 builder.Services.AddMcpServer()
-   .WithStdioServerTransport()
+    .WithStdioServerTransport()
+    .WithHttpTransport(options => {
+        // Sampling + elicitation require server->client requests, which are not
+        // available in stateless mode.
+        options.Stateless = false;
+        
+    })
+    .WithTools([clientsUiTool])
     .WithToolsFromAssembly()
     .WithPromptsFromAssembly()
-    .WithResourcesFromAssembly();
+    .WithResourcesFromAssembly()
+    
+    ;
 
 // Configure Azure clients and services
 TokenCredential azureCredential;
@@ -75,5 +104,21 @@ builder.Logging.AddConsole(options =>
 );
 var app = builder.Build();
 
+var clientsUiPath = Path.Combine(builder.Environment.ContentRootPath, "wwwroot", "clients-ui");
+Directory.CreateDirectory(clientsUiPath);
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(clientsUiPath),
+    RequestPath = "/clients-ui",
+    OnPrepareResponse = context =>
+    {
+        context.Context.Response.Headers.AccessControlAllowOrigin = "*";
+        context.Context.Response.Headers.AccessControlAllowMethods = "GET, OPTIONS";
+        context.Context.Response.Headers.AccessControlAllowHeaders = "Content-Type";
+    }
+});
+
+app.MapMcp("/mcp");
 
 await app.RunAsync();

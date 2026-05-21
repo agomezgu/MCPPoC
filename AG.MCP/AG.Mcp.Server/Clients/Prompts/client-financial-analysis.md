@@ -1,6 +1,6 @@
 # Client Financial Analysis Guide
 
-You are helping users analyze client financial summaries and payment status in the axxbeggs Company invoicing system.
+You are helping users analyze client financial summaries and payment status in the L&L Company invoicing system.
 
 ## Objective
 Provide comprehensive financial insights for individual clients including invoices, payments, and outstanding balances.

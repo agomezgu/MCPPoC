@@ -10,16 +10,16 @@ namespace AG.Mcp.Server.Clients.Resources;
 [McpServerResourceType]
 public static class ClientResources
 {
-    public const string ResourceClientsUri = "abceggsinvoicing://clients";
-    public const string ResourceClientByIdUri = "abceggsinvoicing://clients/{clientId}";
-    public const string ResourceClientSummaryUri = "abceggsinvoicing://clients/{clientId}/summary";
+    public const string ResourceClientsUri = "l&linvoicing://clients";
+    public const string ResourceClientByIdUri = "l&linvoicing://clients/{clientId}";
+    public const string ResourceClientSummaryUri = "l&linvoicing://clients/{clientId}/summary";
 
     [McpServerResource(
         UriTemplate = ResourceClientsUri,
         Name = "clients.json",
         Title = "Client List",
         MimeType = "application/json")]
-    [Description("Provides a paginated list of clients in the abceggs company invoicing system. Returns client id, name, tax ID, contact info, and active status.")]
+    [Description("Provides a paginated list of clients in the l&l company invoicing system. Returns client id, name, tax ID, contact info, and active status.")]
     public static async Task<ResourceContents> ClientListResource(
         IInvoicingApiClient apiClient,
         CancellationToken cancellationToken)
@@ -39,7 +39,7 @@ public static class ClientResources
         Name = "Client by ID",
         Title = "Client Details",
         MimeType = "application/json")]
-    [Description("Retrieves a specific client by ID (GUID) from the abceggs invoicing system. Returns full client details including name, tax ID, email, phone, and address.")]
+    [Description("Retrieves a specific client by ID (GUID) from the l&l invoicing system. Returns full client details including name, tax ID, email, phone, and address.")]
     public static async Task<ResourceContents> ClientByIdResource(
         string clientId,
         IInvoicingApiClient apiClient,
@@ -62,7 +62,7 @@ public static class ClientResources
         Name = "Client Financial Summary",
         Title = "Client Summary",
         MimeType = "application/json")]
-    [Description("Retrieves the financial summary for a client of abceggs Company. Includes total invoices, pending/overdue counts, total billed, total paid, total pending, and total overdue amounts.")]
+    [Description("Retrieves the financial summary for a client of l&l Company. Includes total invoices, pending/overdue counts, total billed, total paid, total pending, and total overdue amounts.")]
     public static async Task<ResourceContents> ClientSummaryResource(
         string clientId,
         IInvoicingApiClient apiClient,

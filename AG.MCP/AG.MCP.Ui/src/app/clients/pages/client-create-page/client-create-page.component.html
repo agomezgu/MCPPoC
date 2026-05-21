@@ -1,0 +1,21 @@
+<article class="card">
+  <div class="card-header">
+    <div>
+      <h3>Create Client</h3>
+      <p>Add a new client record for invoicing.</p>
+    </div>
+
+    <a routerLink="/clients/list">Back to list</a>
+  </div>
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  <app-client-form
+    submitLabel="Create client"
+    submittingLabel="Saving..."
+    [isSubmitting]="isSaving"
+    (formSubmitted)="createClient($event)"
+  />
+</article>

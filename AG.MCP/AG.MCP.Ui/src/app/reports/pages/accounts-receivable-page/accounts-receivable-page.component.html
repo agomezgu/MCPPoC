@@ -1,0 +1,99 @@
+<article class="card">
+  <div class="card-header">
+    <h3>Accounts receivable</h3>
+    <button type="button" (click)="load()" [disabled]="isLoading">
+      {{ isLoading ? 'Refreshing...' : 'Refresh' }}
+    </button>
+  </div>
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  @if (data && !isLoading) {
+    <div class="kpi-grid">
+      <div class="kpi">
+        <span class="label">Total receivable</span>
+        <span class="value">{{ data.totalReceivable | number: '1.2-2' }}</span>
+      </div>
+      <div class="kpi">
+        <span class="label">Total overdue</span>
+        <span class="value">{{ data.totalOverdue | number: '1.2-2' }}</span>
+      </div>
+      <div class="kpi">
+        <span class="label">Pending invoices</span>
+        <span class="value">{{ data.totalPendingInvoices }}</span>
+      </div>
+      <div class="kpi">
+        <span class="label">Overdue invoices</span>
+        <span class="value">{{ data.totalOverdueInvoices }}</span>
+      </div>
+    </div>
+
+    <h4>Pending invoices</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Invoice #</th>
+            <th>Client</th>
+            <th>Due</th>
+            <th>Total</th>
+            <th>Paid</th>
+            <th>Pending</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of data.pendingInvoices; track row.invoiceId) {
+            <tr>
+              <td>{{ row.invoiceNumber }}</td>
+              <td>{{ row.clientName }}</td>
+              <td>{{ row.dueDate | date: 'mediumDate' }}</td>
+              <td>{{ row.totalAmount | number: '1.2-2' }}</td>
+              <td>{{ row.paidAmount | number: '1.2-2' }}</td>
+              <td>{{ row.pendingAmount | number: '1.2-2' }}</td>
+              <td><a [routerLink]="['/invoices', row.invoiceId]">View</a></td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="7">No pending invoices.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Overdue invoices</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Invoice #</th>
+            <th>Client</th>
+            <th>Due</th>
+            <th>Days overdue</th>
+            <th>Pending</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of data.overdueInvoices; track row.invoiceId) {
+            <tr>
+              <td>{{ row.invoiceNumber }}</td>
+              <td>{{ row.clientName }}</td>
+              <td>{{ row.dueDate | date: 'mediumDate' }}</td>
+              <td>{{ row.daysOverdue }}</td>
+              <td>{{ row.pendingAmount | number: '1.2-2' }}</td>
+              <td><a [routerLink]="['/invoices', row.invoiceId]">View</a></td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6">No overdue invoices.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</article>

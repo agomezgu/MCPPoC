@@ -1,0 +1,79 @@
+<article class="card">
+  <div class="card-header">
+    <h3>Client List</h3>
+    <button type="button" (click)="loadClients()" [disabled]="isLoading">
+      {{ isLoading ? 'Refreshing...' : 'Refresh' }}
+    </button>
+  </div>
+
+  <div class="filters">
+    <label class="field">
+      <span>Search</span>
+      <input type="search" [(ngModel)]="search" (keyup.enter)="applyFilters()" placeholder="Name, tax id..." />
+    </label>
+    <label class="field">
+      <span>Sort by</span>
+      <select [(ngModel)]="sortBy">
+        <option value="name">Name</option>
+        <option value="taxId">Tax ID</option>
+        <option value="createdAt">Created</option>
+        <option value="email">Email</option>
+      </select>
+    </label>
+    <label class="field checkbox">
+      <input type="checkbox" [(ngModel)]="sortDescending" />
+      <span>Descending</span>
+    </label>
+    <button type="button" class="secondary" (click)="applyFilters()" [disabled]="isLoading">Apply</button>
+  </div>
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Tax ID</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (client of clients; track client.id) {
+          <tr>
+            <td>{{ client.name }}</td>
+            <td>{{ client.taxId }}</td>
+            <td>{{ client.email || '-' }}</td>
+            <td>{{ client.phone || '-' }}</td>
+            <td>
+              <span [class.active]="client.isActive" [class.inactive]="!client.isActive">
+                {{ client.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+            <td class="actions">
+              <a [routerLink]="['/clients', client.id, 'summary']">Summary</a>
+              <a [routerLink]="['/clients', client.id, 'edit']">Edit</a>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6">No clients found.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pager">
+    <span>Page {{ page }} of {{ totalPages }} ({{ totalCount }} total)</span>
+    <div class="pager-buttons">
+      <button type="button" class="secondary" (click)="goPrev()" [disabled]="isLoading || page <= 1">Previous</button>
+      <button type="button" class="secondary" (click)="goNext()" [disabled]="isLoading || page >= totalPages">Next</button>
+    </div>
+  </div>
+</article>

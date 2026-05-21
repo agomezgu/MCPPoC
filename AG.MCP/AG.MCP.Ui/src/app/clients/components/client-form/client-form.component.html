@@ -1,0 +1,46 @@
+<form [formGroup]="clientForm" (ngSubmit)="submit()">
+  <label>
+    Name *
+    <input formControlName="name" type="text" placeholder="Contoso Ltd." />
+  </label>
+  @if (fieldHasError('name')) {
+    <small class="error">Name is required.</small>
+  }
+
+  <label>
+    Tax ID *
+    <input formControlName="taxId" type="text" placeholder="RUC-123456789" />
+  </label>
+  @if (fieldHasError('taxId')) {
+    <small class="error">Tax ID is required.</small>
+  }
+
+  <label>
+    Email
+    <input formControlName="email" type="email" placeholder="billing@contoso.com" />
+  </label>
+  @if (fieldHasError('email')) {
+    <small class="error">Invalid email format.</small>
+  }
+
+  <label>
+    Phone
+    <input formControlName="phone" type="text" placeholder="+1 555-0000" />
+  </label>
+
+  <label>
+    Address
+    <textarea formControlName="address" rows="3" placeholder="Street, city, country"></textarea>
+  </label>
+
+  @if (showStatus) {
+    <label class="checkbox-field">
+      <input formControlName="isActive" type="checkbox" />
+      Active client
+    </label>
+  }
+
+  <button type="submit" [disabled]="isSubmitting">
+    {{ isSubmitting ? submittingLabel : submitLabel }}
+  </button>
+</form>

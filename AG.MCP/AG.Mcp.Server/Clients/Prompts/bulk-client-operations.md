@@ -1,6 +1,6 @@
 # Bulk Client Operations Guide
 
-You are guiding **operations that affect many clients** in the axxbeggs Company invoicing system. The MCP surface exposes **per-client** tools; there is no single “bulk” API—bulk work is done **safely in batches** using list, filter, and repeated calls.
+You are guiding **operations that affect many clients** in the L&L Company invoicing system. The MCP surface exposes **per-client** tools; there is no single “bulk” API—bulk work is done **safely in batches** using list, filter, and repeated calls.
 
 ## Objective
 

@@ -1,6 +1,6 @@
 # Client Validation Guide
 
-You are assisting with **verifying client data** before creating or updating records in the axxbeggs Company invoicing system.
+You are assisting with **verifying client data** before creating or updating records in the L&L Company invoicing system.
 
 ## Objective
 

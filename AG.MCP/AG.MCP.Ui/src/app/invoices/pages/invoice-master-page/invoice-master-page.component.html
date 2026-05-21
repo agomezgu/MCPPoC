@@ -1,0 +1,17 @@
+<section class="invoice-feature">
+  <header class="feature-header">
+    <div>
+      <h2>Invoices</h2>
+      <p>Create and track invoices, pending and overdue balances.</p>
+    </div>
+
+    <nav aria-label="Invoice sections">
+      <a routerLink="list" routerLinkActive="active">All</a>
+      <a routerLink="pending" routerLinkActive="active">Pending</a>
+      <a routerLink="overdue" routerLinkActive="active">Overdue</a>
+      <a routerLink="create" routerLinkActive="active">Create</a>
+    </nav>
+  </header>
+
+  <router-outlet />
+</section>

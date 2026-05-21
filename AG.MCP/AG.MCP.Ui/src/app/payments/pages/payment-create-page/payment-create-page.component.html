@@ -1,0 +1,56 @@
+<article class="card">
+  <div class="card-header">
+    <h3>Register payment</h3>
+    <a routerLink="/payments/list" class="link-pill">Cancel</a>
+  </div>
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  <form (ngSubmit)="submit()" class="form">
+    <label class="field">
+      <span>Invoice (pending balance)</span>
+      <select
+        [(ngModel)]="invoiceId"
+        name="invoiceId"
+        required
+        [disabled]="isLoadingInvoices"
+        (ngModelChange)="onInvoiceChange()"
+      >
+        <option value="">Select invoice</option>
+        @for (inv of invoices; track inv.id) {
+          <option [value]="inv.id">
+            {{ inv.invoiceNumber }} — {{ inv.clientName }} (pending {{ inv.pendingAmount | number: '1.2-2' }})
+          </option>
+        }
+      </select>
+    </label>
+
+    <label class="field">
+      <span>Amount</span>
+      <input type="number" [(ngModel)]="amount" name="amount" required step="0.01" min="0.01" />
+    </label>
+
+    <label class="field">
+      <span>Payment date</span>
+      <input type="date" [(ngModel)]="paymentDate" name="paymentDate" required />
+    </label>
+
+    <label class="field">
+      <span>Reference</span>
+      <input type="text" [(ngModel)]="reference" name="reference" />
+    </label>
+
+    <label class="field">
+      <span>Notes</span>
+      <textarea [(ngModel)]="notes" name="notes" rows="2"></textarea>
+    </label>
+
+    <div class="actions">
+      <button type="submit" [disabled]="isSaving || isLoadingInvoices">
+        {{ isSaving ? 'Saving…' : 'Register payment' }}
+      </button>
+    </div>
+  </form>
+</article>

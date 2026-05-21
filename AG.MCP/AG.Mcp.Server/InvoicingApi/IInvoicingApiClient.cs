@@ -1,5 +1,4 @@
-using AG.MCP.Application.Common;
-using AG.MCP.Application.DTOs;
+using AG.Mcp.Server.InvoicingApi.Models;
 
 namespace AG.Mcp.Server.InvoicingApi;
 

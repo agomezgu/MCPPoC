@@ -1,0 +1,29 @@
+<article class="card">
+  <div class="card-header">
+    <div>
+      <h3>Update Client</h3>
+      <p>Edit client contact details and active status.</p>
+    </div>
+
+    <a routerLink="/clients/list">Back to list</a>
+  </div>
+
+  @if (isLoading) {
+    <p>Loading client...</p>
+  }
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  @if (client) {
+    <app-client-form
+      submitLabel="Update client"
+      submittingLabel="Saving..."
+      [client]="client"
+      [isSubmitting]="isSaving"
+      [showStatus]="true"
+      (formSubmitted)="updateClient($event)"
+    />
+  }
+</article>

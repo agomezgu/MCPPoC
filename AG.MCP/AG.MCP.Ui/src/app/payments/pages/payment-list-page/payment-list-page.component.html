@@ -1,0 +1,72 @@
+<article class="card">
+  <div class="card-header">
+    <h3>Payment list</h3>
+    <button type="button" (click)="loadPayments()" [disabled]="isLoading">
+      {{ isLoading ? 'Refreshing...' : 'Refresh' }}
+    </button>
+  </div>
+
+  <div class="filters">
+    <label class="field">
+      <span>Search</span>
+      <input type="search" [(ngModel)]="search" (keyup.enter)="applyFilters()" placeholder="Invoice #, reference..." />
+    </label>
+    <label class="field">
+      <span>Sort by</span>
+      <select [(ngModel)]="sortBy">
+        <option value="paymentDate">Payment date</option>
+        <option value="amount">Amount</option>
+        <option value="invoiceNumber">Invoice #</option>
+        <option value="createdAt">Created</option>
+      </select>
+    </label>
+    <label class="field checkbox">
+      <input type="checkbox" [(ngModel)]="sortDescending" />
+      <span>Descending</span>
+    </label>
+    <button type="button" class="secondary" (click)="applyFilters()" [disabled]="isLoading">Apply</button>
+  </div>
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Invoice #</th>
+          <th>Amount</th>
+          <th>Date</th>
+          <th>Reference</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (p of payments; track p.id) {
+          <tr>
+            <td>{{ p.invoiceNumber }}</td>
+            <td>{{ p.amount | number: '1.2-2' }}</td>
+            <td>{{ p.paymentDate | date: 'mediumDate' }}</td>
+            <td>{{ p.reference || '—' }}</td>
+            <td class="actions">
+              <a [routerLink]="['/payments', p.id]">View</a>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5">No payments found.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pager">
+    <span>Page {{ page }} of {{ totalPages }} ({{ totalCount }} total)</span>
+    <div class="pager-buttons">
+      <button type="button" class="secondary" (click)="goPrev()" [disabled]="isLoading || page <= 1">Previous</button>
+      <button type="button" class="secondary" (click)="goNext()" [disabled]="isLoading || page >= totalPages">Next</button>
+    </div>
+  </div>
+</article>

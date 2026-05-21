@@ -12,6 +12,6 @@ public static class TimeOffPrompts
         [Description("Your employee ID (e.g. '4562')")]        
         int employeeId)
     {
-        return $"Using the Globomantics time off planning tool, please suggest some good dates for my next vacation, such as 3- or 4-day weekends. My employee ID is {employeeId}.";
+        return $"Using the L&Ltime off planning tool, please suggest some good dates for my next vacation, such as 3- or 4-day weekends. My employee ID is {employeeId}.";
     }
 }
